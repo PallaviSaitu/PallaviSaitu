@@ -1,16 +1,23 @@
-## Hi there 👋
+# 👋 Hi, I'm Pallavi
 
-<!--
-**PallaviSaitu/PallaviSaitu** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+I'm a data scientist in training with a passion for exploring how data and intelligent systems intersect with human behavior. My work focuses on research-driven, real-world projects that combine analytics, storytelling, and curiosity.
 
-Here are some ideas to get you started:
+📊 I build data tools and dashboards that speak clearly.  
+🧠 I'm exploring the cognitive and ethical dimensions of AI.  
+📚 I learn by doing—and share as I grow.
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+---
+
+### 🔬 Interests
+- Behavioral data modeling  
+- Machine learning & interpretability  
+- Human-AI interaction  
+
+---
+
+### 📂 Portfolio Highlights
+🔗 [Visit My Project Repository](https://github.com/PallaviSaitu/data-science-portfolio)
+
+---
+
+📫 Connect with me on [LinkedIn](https://www.linkedin.com/in/pallavisaitu/)
