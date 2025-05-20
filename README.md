@@ -20,4 +20,4 @@ I'm a data scientist in training with a passion for exploring how data and intel
 
 ---
 
-📫 Connect with me on [LinkedIn](https://www.linkedin.com/in/pallavisaitu/)
+📫 Connect with me on [LinkedIn]([https://www.linkedin.com/in/pallavisaitu/](https://www.linkedin.com/in/pallavi-saitu/))
