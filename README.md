@@ -20,5 +20,6 @@ I'm a data scientist in training with a passion for exploring how data and intel
 
 ---
 
-📫 Connect with me on [LinkedIn](https://www.linkedin.com/in/pallavi-saitu/)
-- [Tableau Public](https://public.tableau.com/app/profile/pallavi3100/vizzes)
+📫 Connect with me :
+[LinkedIn](https://www.linkedin.com/in/pallavi-saitu/)
+[Tableau Public](https://public.tableau.com/app/profile/pallavi3100/vizzes)
