@@ -1,25 +1,24 @@
 # 👋 Hi, I'm Pallavi
 
-I'm a data scientist in training with a passion for exploring how data and intelligent systems intersect with human behavior. My work focuses on research-driven, real-world projects that combine analytics, storytelling, and curiosity.
+I'm a people analytics practitioner and educator who turns workforce data into clear, actionable insight. My work sits at the intersection of analytics, storytelling, and learning design focusing on talent acquisition and people operations.
 
-📊 I build data tools and dashboards that speak clearly.  
-🧠 I'm exploring the cognitive and ethical dimensions of AI.  
-📚 I learn by doing—and share as I grow.
+📊 I build dashboards and data tools that speak plainly.
+📚 I design e-learning content that makes HR analytics accessible to all 
+🧠 I'm exploring how AI can augment not replace human judgment at work.
 
 ---
-
 ### 🔬 Interests
-- Behavioral data modeling  
-- Machine learning & interpretability  
-- Human-AI interaction  
+- People analytics in talent acquisition
+- Workforce data storytelling & dashboard design
+- Ethical, human-centered AI in HR
 
 ---
 
 ### 📂 Portfolio Highlights
-🔗 [Visit My Project Repository](https://github.com/PallaviSaitu/data-science-portfolio)
+🔗 [Data Science Portfolio](https://github.com/PallaviSaitu/data-science-portfolio)
+🎓 People Analytics Learning Series *(coming soon)*
 
 ---
 
-📫 Connect with me :
-[LinkedIn](https://www.linkedin.com/in/pallavi-saitu/)
-[Tableau Public](https://public.tableau.com/app/profile/pallavi3100/vizzes)
+📫 Connect with me:
+[LinkedIn](https://www.linkedin.com/in/pallavi-saitu/) · [Tableau Public](https://public.tableau.com/app/profile/pallavi3100/vizzes)
