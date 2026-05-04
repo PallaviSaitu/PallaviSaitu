@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pallavi Saitu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #F5EEE3;
+      --bg-alt:     #EDE5D5;
+      --text:       #2A1F14;
+      --text-muted: #7A6350;
+      --accent:     #B5714A;
+      --indigo:     #1E1B4B;
+      --border:     rgba(42, 31, 20, 0.13);
+      --font:       'Cormorant Garamond', Georgia, serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 19px;
+      line-height: 1.75;
+    }
+
+    /* ─── NAV ──────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 64px;
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-name {
+      font-size: 21px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+      flex-wrap: nowrap;
+    }
+
+    .nav-links a {
+      font-size: 14.5px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      border-bottom-color: var(--text);
+    }
+
+    .nav-edit-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(42,31,20,0.3);
+      font-size: 13px;
+      padding: 4px 8px;
+      margin-left: 16px;
+      border-radius: 4px;
+      transition: color 0.25s;
+      font-family: inherit;
+      flex-shrink: 0;
+    }
+
+    .nav-edit-btn:hover { color: var(--accent); }
+    .nav-edit-btn.active { color: var(--accent); }
+
+    /* ─── EDIT PANEL ────────────────────────────────────── */
+    .edit-panel {
+      display: none;
+      position: fixed;
+      top: 74px;
+      right: 24px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px 30px;
+      z-index: 200;
+      min-width: 230px;
+      box-shadow: 0 12px 48px rgba(42, 31, 20, 0.14);
+    }
+
+    .edit-panel.open { display: block; }
+
+    .edit-panel-title {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      font-weight: 400;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toggle-row:last-child { border-bottom: none; }
+
+    .toggle-label {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text);
+      user-select: none;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 38px;
+      height: 21px;
+      flex-shrink: 0;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: rgba(42,31,20,0.15);
+      border-radius: 21px;
+      transition: background 0.3s;
+    }
+
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      left: 3px;
+      top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .toggle-switch input:checked + .slider { background: var(--accent); }
+    .toggle-switch input:checked + .slider::before { transform: translateX(17px); }
+
+    /* ─── DIVIDERS ──────────────────────────────────────── */
+    .divider {
+      width: 100%;
+      height: 40px;
+      overflow: visible;
+    }
+
+    .divider svg { width: 100%; height: 40px; }
+
+    /* ─── ABOUT ─────────────────────────────────────────── */
+    #about {
+      padding: 100px 120px 90px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 90px;
+      align-items: center;
+    }
+
+    .about-photo {
+      width: 100%;
+      aspect-ratio: 1 / 1.05;
+      background: rgba(42,31,20,0.06);
+      border: 1px dashed var(--border);
+      border-radius: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-muted);
+      overflow: hidden;
+    }
+
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 28px;
+      display: none; /* show when src is set */
+    }
+
+    .photo-hint {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .about-text h1 {
+      font-size: 68px;
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+    }
+
+    .about-tagline {
+      font-size: 21px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 38px;
+      max-width: 520px;
+    }
+
+    .about-bio {
+      font-size: 18px;
+      line-height: 1.9;
+      color: var(--text);
+      max-width: 560px;
+    }
+
+    /* ─── CHAPTER SHELL ─────────────────────────────────── */
+    .chapter {
+      padding: 90px 120px 100px;
+    }
+
+    .chapter:nth-of-type(even) {
+      background: var(--bg-alt);
+    }
+
+    .ch-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .ch-title {
+      font-size: 54px;
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 56px;
+    }
+
+    /* ─── TWO-COLUMN CONTENT ────────────────────────────── */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .content-grid.flip {
+      direction: rtl;
+    }
+
+    .content-grid.flip > * {
+      direction: ltr;
+    }
+
+    /* ─── IMAGE PLACEHOLDERS ────────────────────────────── */
+    .img-ph {
+      background: rgba(42,31,20,0.05);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .img-ph.land   { aspect-ratio: 4 / 3; }
+    .img-ph.port   { aspect-ratio: 3 / 4; }
+    .img-ph.sq     { aspect-ratio: 1 / 1; }
+    .img-ph.wide   { aspect-ratio: 16 / 9; }
+
+    /* ─── TEXT BLOCKS ───────────────────────────────────── */
+    .ct h3 {
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 18px;
+    }
+
+    .ct p {
+      font-size: 17px;
+      line-height: 1.9;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .ct p:last-child { margin-bottom: 0; }
+
+    /* ─── ART ───────────────────────────────────────────── */
+    .art-sub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 18px;
+    }
+
+    /* ─── POETRY ────────────────────────────────────────── */
+    .poetry-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .poem {
+      padding: 48px 40px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.35);
+    }
+
+    .poem-name {
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+
+    .poem-body {
+      font-size: 21px;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 2;
+      color: var(--text);
+    }
+
+    .poem-note {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 28px;
+      font-style: italic;
+    }
+
+    /* ─── WRITING ───────────────────────────────────────── */
+    .writing-intro {
+      font-size: 19px;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin-bottom: 52px;
+      line-height: 1.85;
+    }
+
+    .writing-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .wcard {
+      padding: 36px 32px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.38);
+      transition: box-shadow 0.25s;
+    }
+
+    .wcard:hover {
+      box-shadow: 0 8px 32px rgba(42,31,20,0.08);
+    }
+
+    .wcard-tag {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .wcard h4 {
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .wcard p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    /* ─── PHOTOGRAPHY ───────────────────────────────────── */
+    .photo-intro {
+      font-size: 19px;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin-bottom: 52px;
+      line-height: 1.85;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .photo-cell {
+      aspect-ratio: 1;
+      background: rgba(42,31,20,0.05);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: border-color 0.2s;
+    }
+
+    .photo-cell:hover {
+      border-color: var(--accent);
+    }
+
+    /* ─── QUOTE INTERLUDE ───────────────────────────────── */
+    .quote-strip {
+      padding: 72px 120px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .quote-strip blockquote {
+      font-size: 38px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      max-width: 780px;
+      color: var(--text);
+    }
+
+    .quote-strip cite {
+      display: block;
+      margin-top: 22px;
+      font-size: 15px;
+      font-style: normal;
+      color: var(--text-muted);
+      letter-spacing: 0.07em;
+    }
+
+    /* ─── MUSIC ─────────────────────────────────────────── */
+    .music-note {
+      font-size: 19px;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 52px;
+      line-height: 1.85;
+    }
+
+    /* ─── PEOPLE ────────────────────────────────────────── */
+    .people-intro {
+      font-size: 19px;
+      color: var(--text-muted);
+      font-style: italic;
+      max-width: 560px;
+      margin-bottom: 52px;
+      line-height: 1.85;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────── */
+    footer {
+      padding: 56px 120px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-quote {
+      font-size: 15px;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .footer-name {
+      font-size: 14px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── VISIBILITY ────────────────────────────────────── */
+    .chapter-hidden,
+    .divider-hidden { display: none !important; }
+
+    .nav-item-hidden { display: none !important; }
+
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAV
+══════════════════════════════════════ -->
+<nav>
+  <a href="#about" class="nav-name">Pallavi Saitu</a>
+
+  <ul class="nav-links" id="navLinks">
+    <li data-chapter="about">   <a href="#about">About Me</a></li>
+    <li data-chapter="art">     <a href="#art">Art</a></li>
+    <li data-chapter="poetry">  <a href="#poetry">Poetry</a></li>
+    <li data-chapter="writing"> <a href="#writing">Writing</a></li>
+    <li data-chapter="volunteering"><a href="#volunteering">Volunteering</a></li>
+    <li data-chapter="photography"><a href="#photography">Photography</a></li>
+    <li data-chapter="music">   <a href="#music">Music</a></li>
+    <li data-chapter="people">  <a href="#people">People</a></li>
+  </ul>
+
+  <button class="nav-edit-btn" id="editBtn" title="Manage chapters">✦</button>
+</nav>
+
+<!-- ══════════════════════════════════════
+     EDIT PANEL
+══════════════════════════════════════ -->
+<div class="edit-panel" id="editPanel">
+  <p class="edit-panel-title">Chapters</p>
+
+  <div class="toggle-row">
+    <span class="toggle-label">About Me</span>
+    <label class="toggle-switch">
+      <input type="checkbox" checked data-target="about" />
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">Art</span>
+    <label class="toggle-switch">
+      <input type="checkbox" checked data-target="art" />
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">Poetry</span>
+    <label class="toggle-switch">
+      <input type="checkbox" checked data-target="poetry" />
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">Writing</span>
+    <label class="toggle-switch">
+      <input type="checkbox" checked data-target="writing" />
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">Volunteering</span>
+    <label class="toggle-switch">
+      <input type="checkbox" checked data-target="volunteering" />
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">Photography</span>
+    <label class="toggle-switch">
+      <input type="checkbox" checked data-target="photography" />
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">Music</span>
+    <label class="toggle-switch">
+      <input type="checkbox" checked data-target="music" />
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="toggle-row">
+    <span class="toggle-label">People</span>
+    <label class="toggle-switch">
+      <input type="checkbox" checked data-target="people" />
+      <span class="slider"></span>
+    </label>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     ABOUT ME
+══════════════════════════════════════ -->
+<section class="chapter" id="about">
+  <div class="about-grid">
+
+    <div class="about-photo">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4">
+        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span class="photo-hint">Your photo</span>
+    </div>
+
+    <div class="about-text">
+      <h1>Pallavi<br>Saitu</h1>
+      <p class="about-tagline">Living life as it comes and letting go<br>as and when it needs to go.</p>
+      <p class="about-bio">
+        Welcome. This is my corner of the world — a place where I gather the things I love and the ways I see. I paint, shape clay, photograph what moves me, and am slowly writing my way into a book. I believe in the beauty of impermanence, the wisdom in stillness, and the quiet courage it takes to share yourself fully.
+        <br><br>
+        This page is a living thing. Not everything will always be visible — and that's entirely by design. What you find here is what I've chosen to open, for now.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- divider -->
+<div class="divider" data-divider-for="art">
+  <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+    <path d="M0,22 Q360,4 720,22 Q1080,40 1440,22" stroke="var(--indigo)" stroke-width="1" fill="none"/>
+  </svg>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     ART
+══════════════════════════════════════ -->
+<section class="chapter" id="art">
+  <span class="ch-label">Chapter I</span>
+  <h2 class="ch-title">Art</h2>
+
+  <div class="content-grid">
+    <div>
+      <div class="img-ph port">Painting</div>
+      <div class="art-sub-grid">
+        <div class="img-ph sq">Pottery</div>
+        <div class="img-ph sq">Pottery</div>
+      </div>
+    </div>
+    <div class="ct">
+      <h3>Where colour becomes language</h3>
+      <p>Painting and pottery are how I slow down. There is something about working with your hands — a brush against canvas, fingers pressing into clay — that quiets the noise and makes room for something truer.</p>
+      <p>Each piece holds a moment I was trying to understand. This is a collection of what I've made: imperfect, evolving, entirely mine.</p>
+      <p>Add captions, descriptions, or stories behind each piece here.</p>
+      <br/>
+      <div class="img-ph wide">Studio / Process</div>
+    </div>
+  </div>
+</section>
+
+<!-- divider -->
+<div class="divider" data-divider-for="poetry">
+  <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+    <path d="M0,18 Q360,38 720,18 Q1080,0 1440,18" stroke="var(--indigo)" stroke-width="1" fill="none"/>
+  </svg>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     POETRY
+══════════════════════════════════════ -->
+<section class="chapter" id="poetry">
+  <span class="ch-label">Chapter II</span>
+  <h2 class="ch-title">Poetry</h2>
+
+  <div class="poetry-wrap">
+    <div>
+      <div class="poem">
+        <p class="poem-name">I. Untitled</p>
+        <p class="poem-body">
+          Some things arrive<br>
+          not to stay —<br>
+          but to show you<br>
+          the shape of what you are<br>
+          when you hold them.
+        </p>
+        <p class="poem-note">— Place your poem here</p>
+      </div>
+    </div>
+
+    <div class="ct">
+      <h3>Words that arrive on their own</h3>
+      <p>Poetry is how I process what I can't quite explain. Sometimes it comes at 2am, sometimes in the middle of a walk. I don't edit it much — that would ruin it.</p>
+      <p>This chapter holds whatever poems I feel brave enough to share. They may appear and disappear. That's the nature of them.</p>
+      <br/>
+      <div class="img-ph land">Image / Mood</div>
+    </div>
+  </div>
+</section>
+
+<!-- Quote interlude -->
+<div class="quote-strip" data-divider-for="writing">
+  <blockquote>
+    "The most beautiful thing we can experience is the mysterious. It is the source of all true art."
+    <cite>— Albert Einstein</cite>
+  </blockquote>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     WRITING
+══════════════════════════════════════ -->
+<section class="chapter" id="writing">
+  <span class="ch-label">Chapter III</span>
+  <h2 class="ch-title">Writing</h2>
+
+  <p class="writing-intro">A book is slowly finding its way out of me. In the meantime — thoughts, essays, fragments, beginnings.</p>
+
+  <div class="writing-cards">
+    <div class="wcard">
+      <p class="wcard-tag">In progress</p>
+      <h4>The Book</h4>
+      <p>A story that's been living inside me for years. This is where it begins to take shape. More soon.</p>
+    </div>
+    <div class="wcard">
+      <p class="wcard-tag">Essay</p>
+      <h4>On Letting Go</h4>
+      <p>Some things aren't meant to be held forever. This is about learning the difference between the two.</p>
+    </div>
+    <div class="wcard">
+      <p class="wcard-tag">Reflection</p>
+      <h4>Notes on Impermanence</h4>
+      <p>What pottery taught me about holding things loosely — and why that's a gift, not a loss.</p>
+    </div>
+  </div>
+</section>
+
+<!-- divider -->
+<div class="divider" data-divider-for="volunteering">
+  <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+    <path d="M0,22 Q360,4 720,22 Q1080,40 1440,22" stroke="var(--indigo)" stroke-width="1" fill="none"/>
+  </svg>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     VOLUNTEERING
+══════════════════════════════════════ -->
+<section class="chapter" id="volunteering">
+  <span class="ch-label">Chapter IV</span>
+  <h2 class="ch-title">Volunteering</h2>
+
+  <div class="content-grid flip">
+    <div class="img-ph land">Image</div>
+    <div class="ct">
+      <h3>Giving back is the whole point</h3>
+      <p>The causes I show up for, the communities I belong to, the work that matters beyond the personal. Here is where service meets meaning.</p>
+      <p>Add your organisations, causes, and the work you do here — along with why it matters to you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- divider -->
+<div class="divider" data-divider-for="photography">
+  <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+    <path d="M0,18 Q360,38 720,18 Q1080,0 1440,18" stroke="var(--indigo)" stroke-width="1" fill="none"/>
+  </svg>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     PHOTOGRAPHY
+══════════════════════════════════════ -->
+<section class="chapter" id="photography">
+  <span class="ch-label">Chapter V</span>
+  <h2 class="ch-title">Photography</h2>
+
+  <p class="photo-intro">The world as I see it, frame by frame. A quiet archive of moments that asked to be remembered.</p>
+
+  <div class="photo-grid">
+    <div class="photo-cell">Photo</div>
+    <div class="photo-cell">Photo</div>
+    <div class="photo-cell">Photo</div>
+    <div class="photo-cell">Photo</div>
+    <div class="photo-cell">Photo</div>
+    <div class="photo-cell">Photo</div>
+    <div class="photo-cell">Photo</div>
+    <div class="photo-cell">Photo</div>
+    <div class="photo-cell">Photo</div>
+  </div>
+</section>
+
+<!-- divider -->
+<div class="divider" data-divider-for="music">
+  <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+    <path d="M0,22 Q360,4 720,22 Q1080,40 1440,22" stroke="var(--indigo)" stroke-width="1" fill="none"/>
+  </svg>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     MUSIC
+══════════════════════════════════════ -->
+<section class="chapter" id="music">
+  <span class="ch-label">Chapter VI</span>
+  <h2 class="ch-title">Music</h2>
+
+  <div class="content-grid">
+    <div class="img-ph land">Image / Album Art</div>
+    <div class="ct">
+      <h3>What I hear when I go quiet</h3>
+      <p class="music-note">Music is the language underneath all the other languages. This is what I'm listening to, what moves me, what I keep coming back to.</p>
+      <p>Add playlists, artists, albums, live shows, or anything else music means to you here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- divider -->
+<div class="divider" data-divider-for="people">
+  <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+    <path d="M0,18 Q360,38 720,18 Q1080,0 1440,18" stroke="var(--indigo)" stroke-width="1" fill="none"/>
+  </svg>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     PEOPLE
+══════════════════════════════════════ -->
+<section class="chapter" id="people">
+  <span class="ch-label">Chapter VII</span>
+  <h2 class="ch-title">People</h2>
+
+  <div class="content-grid flip">
+    <div class="img-ph port">Image</div>
+    <div class="ct">
+      <h3>The ones who shape you</h3>
+      <p class="people-intro">A love letter to the people in my life — the ones who've taught me something, held space for me, or simply made the ordinary feel significant.</p>
+      <p>This is the most personal chapter. It will only ever be visible when I choose to open it.</p>
+      <br/>
+      <div class="img-ph land">Image</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer>
+  <span class="footer-quote">For the ones who find beauty in the everyday.</span>
+  <span class="footer-name">Pallavi Saitu &nbsp;·&nbsp; 2026</span>
+</footer>
+
+
+<!-- ══════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════ -->
+<script>
+  /* ── Edit panel open/close ── */
+  const editBtn   = document.getElementById('editBtn');
+  const editPanel = document.getElementById('editPanel');
+
+  editBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const isOpen = editPanel.classList.toggle('open');
+    editBtn.classList.toggle('active', isOpen);
+  });
+
+  document.addEventListener('click', e => {
+    if (!editPanel.contains(e.target) && e.target !== editBtn) {
+      editPanel.classList.remove('open');
+      editBtn.classList.remove('active');
+    }
+  });
+
+  /* ── Toggle chapter visibility ── */
+  function toggleChapter(checkbox) {
+    const target  = checkbox.getAttribute('data-target');
+    const section = document.getElementById(target);
+    const navItem = document.querySelector(`[data-chapter="${target}"]`);
+    const divider = document.querySelector(`[data-divider-for="${target}"]`);
+
+    if (checkbox.checked) {
+      section.classList.remove('chapter-hidden');
+      if (navItem)  navItem.classList.remove('nav-item-hidden');
+      if (divider)  divider.classList.remove('divider-hidden');
+    } else {
+      section.classList.add('chapter-hidden');
+      if (navItem)  navItem.classList.add('nav-item-hidden');
+      if (divider)  divider.classList.add('divider-hidden');
+    }
+
+    saveState();
+  }
+
+  /* ── Wire up all toggles ── */
+  document.querySelectorAll('.toggle-switch input').forEach(cb => {
+    cb.addEventListener('change', () => toggleChapter(cb));
+  });
+
+  /* ── Persist state in localStorage ── */
+  function saveState() {
+    const state = {};
+    document.querySelectorAll('.toggle-switch input').forEach(cb => {
+      state[cb.getAttribute('data-target')] = cb.checked;
+    });
+    try { localStorage.setItem('ps_chapters', JSON.stringify(state)); } catch(e) {}
+  }
+
+  function loadState() {
+    let saved;
+    try { saved = JSON.parse(localStorage.getItem('ps_chapters')); } catch(e) {}
+    if (!saved) return;
+    document.querySelectorAll('.toggle-switch input').forEach(cb => {
+      const key = cb.getAttribute('data-target');
+      if (saved[key] !== undefined) {
+        cb.checked = saved[key];
+        toggleChapter(cb);
+      }
+    });
+  }
+
+  loadState();
+
+  /* ── Active nav link on scroll ── */
+  const allSections = document.querySelectorAll('section.chapter');
+  const navAnchors  = document.querySelectorAll('.nav-links a');
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navAnchors.forEach(a => a.classList.remove('active'));
+        const match = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+
+  allSections.forEach(s => io.observe(s));
+</script>
+
+</body>
+</html>
